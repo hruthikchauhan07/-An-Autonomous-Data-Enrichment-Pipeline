@@ -54,7 +54,11 @@ To run this workflow, you will need to set up credentials in your n8n instance f
 
 Here is an overview of the complete n8n workflow graph.
 
-![Workflow Canvas](<path/to/your/workflow_canvas_screenshot.png>)
+![Workflow Canvas]![Workflow Canvas](assets/workflow-canvas.png)
+...
+![Reddit Node Config](assets/reddit-search-config.png)
+...
+![Google Sheets Result](assets/google-sheets-result.png)
 *(Image based on:)*
 
 ### Process & Configuration
@@ -71,6 +75,6 @@ Screenshots showing the configuration of key nodes in the workflow.
 ### Final Result
 
 The output of the workflow, showing the structured data appended to the target Google Sheet.
-
+[View the Live Google Sheet Output](https://docs.google.com/spreadsheets/d/1pZW5ZT6HGJQM_CzMtqabpbHOytfRMujAQdKa6THhQ48/edit?usp=sharing)
 ![Google Sheets Result](<path/to/your/google_sheets_result.png>)
 *(Image based on:)*
