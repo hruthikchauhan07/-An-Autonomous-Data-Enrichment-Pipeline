@@ -1,4 +1,6 @@
-# n8n Workflow: Reddit Post AI Classifier & Google Sheets Logger
+# n8n Workflow: An Autonomous Data Enrichment Pipeline
+
+# Reddit Post AI Classifier & Google Sheets Logger
 
 This project is an [n8n](https://n8n.io/) workflow that automatically fetches posts from a specified subreddit, uses a Large Language Model (LLM) to classify them, and saves the categorized data to a Google Sheet.
 
