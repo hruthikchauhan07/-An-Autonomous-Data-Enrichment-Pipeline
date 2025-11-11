@@ -1,0 +1,411 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0943ec6f-8b29-43d4-8fed-cae374de2878",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "subreddit": "MachineLearning",
+        "keyword": "How to learn",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d39b3da5-f324-47cb-9db6-d27b3c0456bd",
+      "name": "Search for a post",
+      "credentials": {
+        "redditOAuth2Api": {
+          "id": "LJmtSJJZwkzHOlAZ",
+          "name": "Reddit account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "f6f77d0e-6008-4bc5-a664-6448cf08b4ec",
+              "leftValue": "={{ $json.ups }}",
+              "rightValue": 2,
+              "operator": {
+                "type": "number",
+                "operation": "gte"
+              }
+            },
+            {
+              "id": "49e59cfb-db9a-4945-ac69-57a307b6709d",
+              "leftValue": "={{ $json.selftext }}",
+              "rightValue": null,
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "89a3a2db-229e-403b-9d81-c253aba4ed58",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "06f657b6-7ae6-4d10-8f3a-519a09f3d5a6",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "a91bc228-bcc8-429a-85d7-3a9ff04c5296",
+              "name": "selftext",
+              "value": "={{ $json.selftext }}",
+              "type": "string"
+            },
+            {
+              "id": "25007757-a751-4419-a93a-262f485fcbd5",
+              "name": "ups",
+              "value": "={{ $json.ups }}",
+              "type": "number"
+            },
+            {
+              "id": "626fa81f-b6b4-4d6f-a6f9-c30888c5c5fe",
+              "name": "created",
+              "value": "={{ $json.created }}",
+              "type": "number"
+            },
+            {
+              "id": "7673deda-93ca-4ca1-ac4c-e03334c89bf9",
+              "name": "url",
+              "value": "={{ $json.url }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "d3833567-0de5-4b61-b08d-1a374b7b0bf0",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a research assistant specializing in Machine Learning. Your task is to analyze and categorize the provided Reddit post.\n\nBased on the post's title and body, classify it into one of the following categories:\n- \"Beginner Question\": The user is new and asking for fundamental concepts or learning paths.\n- \"Technical Help\": The user has a specific problem with code, a model, or a framework and is asking for a solution.\n- \"Project Showcase\": The user is sharing a project they created.\n- \"Research Paper/Article\": The post is a link to or a discussion of a new research paper, article, or major breakthrough.\n- \"Career/Education Advice\": The post is about jobs, university, or career paths in ML/AI.\n- \"General Discussion\": The post is a general opinion, news, or discussion that doesn't fit other categories.\n\nAlso, provide a one-sentence summary of the user's main point.\n\nRespond with ONLY a valid JSON object with the keys \"category\" and \"summary\".\n\nReddit Post:\nTitle: {{ $json.title }}\nBody: {{ $json.selftext }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        832,
+        -384
+      ],
+      "id": "9a4f72bc-05ea-401f-ba9b-c58a5f44a303",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        816,
+        48
+      ],
+      "id": "eefcf9a1-357d-4ef1-b0f2-04d9305abbd3",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "bH33naqunfDcSn9n",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1296,
+        -80
+      ],
+      "id": "505d0a2f-a46e-4202-bec2-c22787fc7247",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "44b048af-5b10-4e37-b4c7-92b092605c07",
+              "leftValue": "={{ $json.title }}{{ $json.output }}",
+              "rightValue": "resources",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1504,
+        -80
+      ],
+      "id": "ef6cbf74-5d56-498e-81ee-dcd1de4fb73c",
+      "name": "If1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1pZW5ZT6HGJQM_CzMtqabpbHOytfRMujAQdKa6THhQ48",
+          "mode": "list",
+          "cachedResultName": "Learn ML",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pZW5ZT6HGJQM_CzMtqabpbHOytfRMujAQdKa6THhQ48/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pZW5ZT6HGJQM_CzMtqabpbHOytfRMujAQdKa6THhQ48/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.title }}",
+            "Solution": "={{ $json.output }}",
+            "Up votes": "={{ $json.ups }}",
+            "URL": "={{ $json.url }}",
+            "Original post": "={{ $json.selftext }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Original post",
+              "displayName": "Original post",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Up votes",
+              "displayName": "Up votes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "URL",
+              "displayName": "URL",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Solution",
+              "displayName": "Solution",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        1792,
+        -112
+      ],
+      "id": "fc234981-0128-4712-890d-d763217b2900",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dLfjXD7tNJZe4u2g",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Search for a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search for a post": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0528a6e3-4f8d-4964-adde-3feeea03b09c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ce5158649e18111232af817d664245e8472008b9a3b0a3ac05dbc825762fe640"
+  },
+  "id": "KPoXy9JWeWPSGPCy",
+  "tags": []
+}
