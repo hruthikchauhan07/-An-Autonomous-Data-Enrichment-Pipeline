@@ -76,5 +76,5 @@ Screenshots showing the configuration of key nodes in the workflow.
 
 The output of the workflow, showing the structured data appended to the target Google Sheet.
 [View the Live Google Sheet Output](https://docs.google.com/spreadsheets/d/1pZW5ZT6HGJQM_CzMtqabpbHOytfRMujAQdKa6THhQ48/edit?usp=sharing)
-![Google Sheets Result](assets/google-sheets-result.png>)
+![Google Sheets Result](assets/google-sheets-result.png)
 *(Image based on:)*
