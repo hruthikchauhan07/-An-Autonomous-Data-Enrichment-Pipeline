@@ -61,16 +61,6 @@ Here is an overview of the complete n8n workflow graph.
 ![Google Sheets Result](assets/google-sheets-result.png)
 *(Image based on:)*
 
-### Process & Configuration
-
-Screenshots showing the configuration of key nodes in the workflow.
-
-| Node | Configuration |
-| :--- | :--- |
-| **Search for a post** | ![Reddit Node Config](<path/to/your/reddit_search_config.png>) *(Image based on:)* |
-| **If Filter** | ![If Node Config](<path/to/your/if_filter_config.png>) *(Image based on:)* |
-| **AI Agent Prompt** | ![AI Agent Prompt](<path/to/your/ai_agent_prompt.png>) *(Image based on:)* |
-| **Google Sheets Output**| ![Google Sheets Config](<path/to/your/google_sheets_config.png>) *(Image based on:)* |
 
 ### Final Result
 
